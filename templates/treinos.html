@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %} Treinos de {{ cliente.nome }} | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>📝 Rotina de Treino de {{ cliente.nome }}</h2>
+    
+    {% if perfil == 'professor' %}
+    <h3>Adicionar Novo Exercício</h3>
+    <form method="POST" action="{{ url_for('treinos', cliente_id=cliente.id) }}">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+            <div style="grid-column: span 1;">
+                <label for="nome_treino">Treino (Ex: A):</label>
+                <input type="text" id="nome_treino" name="nome_treino" required>
+            </div>
+            <div style="grid-column: span 3;">
+                <label for="nome_exercicio">Exercício:</label>
+                <select id="nome_exercicio" name="nome_exercicio" required>
+                    <option value="" disabled selected>Selecione um exercício</option>
+                    {% for exercicio in exercicios_cadastrados %}
+                        <option value="{{ exercicio }}">{{ exercicio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="flex-grow: 1;"><label for="series">Séries:</label><input type="text" id="series" name="series" value="3" required></div>
+            <div style="flex-grow: 1;"><label for="reps">Repetições:</label><input type="text" id="reps" name="reps" value="10" required></div>
+            <div style="flex-grow: 1;"><label for="carga">Carga (Kg):</label><input type="text" id="carga" name="carga" value="-"></div>
+        </div>
+
+        <button type="submit">Adicionar Exercício</button>
+    </form>
+    <hr>
+    {% endif %}
+    
+    <h3>Rotinas Cadastradas:</h3>
+    <div class="nav-links" style="border: none;">
+        {% for nome_treino in treinos_cliente.keys() %}
+            <a href="{{ url_for('treinos', cliente_id=cliente.id, nome_treino_selecionado=nome_treino) }}" 
+               style="background-color: {% if nome_treino == treino_atual %}var(--primary-color){% else %}#f2f2f2{% endif %}; 
+               color: {% if nome_treino == treino_atual %}white{% else %}var(--text-color){% endif %};">
+                Treino {{ nome_treino }}
+            </a>
+        {% endfor %}
+    </div>
+    <br>
+
+    {% if treino_atual %}
+        <h3>Detalhes do Treino: {{ treino_atual }}</h3>
+        <table cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Exercício</th>
+                    <th>Imagem</th>
+                    <th>Séries</th>
+                    <th>Repetições</th>
+                    <th>Carga (Kg)</th>
+                    {% if perfil == 'professor' %}
+                    <th>Ação</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for exercicio in treinos_cliente[treino_atual] %}
+                <tr>
+                    <td>{{ loop.index }}</td> 
+                    <td>{{ exercicio.nome }}</td>
+                    <td>
+                        {% if exercicio.nome in imagens_exercicios %}
+                            <img src="{{ url_for('static', filename='images/' + imagens_exercicios[exercicio.nome]) }}" 
+                                 alt="{{ exercicio.nome }}" class="exercise-img">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ exercicio.series }}</td>
+                    <td>{{ exercicio.reps }}</td>
+                    <td>{{ exercicio.carga }}</td>
+                    {% if perfil == 'professor' %}
+                    <td>
+                        <form method="POST" action="{{ url_for('treinos', cliente_id=cliente.id) }}" style="display:inline;">
+                            <input type="hidden" name="remover_exercicio_index" value="{{ loop.index0 }}">
+                            <input type="hidden" name="treino_alvo" value="{{ treino_atual }}">
+                            <button type="submit" onclick="return confirm('Confirmar remoção de {{ exercicio.nome }}?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">❌</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma rotina de treino cadastrada ainda.</p>
+    {% endif %}
+{% endblock %}

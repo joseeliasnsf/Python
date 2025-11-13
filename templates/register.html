@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Cadastro de Usuário | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <div class="login-box" style="margin-top: 20px;">
+        <header class="logo-container" style="margin-bottom: 10px;">
+            <div class="logo-text" style="font-size: 2.5em;">Cadastro</div>
+            <span class="logo-subtext">Crie sua Conta Pessoal</span>
+        </header>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <label for="perfil">Tipo de Usuário:</label>
+            <select id="perfil" name="perfil" required>
+                <option value="" disabled selected>Escolha seu perfil</option>
+                <option value="professor">Professor</option>
+                <option value="aluno">Aluno</option>
+            </select>
+
+            <label for="email">E-mail (Será seu Login):</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            
+            <button type="submit">Cadastrar</button>
+        </form>
+        
+        <p style="margin-top: 20px;">
+            <a href="{{ url_for('login') }}">Já tem conta? Faça login.</a>
+        </p>
+    </div>
+{% endblock %}

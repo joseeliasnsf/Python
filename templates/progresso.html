@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %} Progresso de {{ cliente.nome }} | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>📈 Acompanhamento de Progresso de {{ cliente.nome }}</h2>
+
+    {% if perfil == 'professor' %}
+    <h3>Registrar Novo Progresso</h3>
+    <form method="POST" action="{{ url_for('progresso', cliente_id=cliente.id) }}">
+        <div style="display: flex; gap: 20px;">
+            <div style="flex-grow: 1;">
+                <label for="peso">Peso (Kg):</label>
+                <input type="number" step="0.1" id="peso" name="peso" required>
+            </div>
+            <div style="flex-grow: 1;">
+                <label for="cintura">Cintura (cm):</label>
+                <input type="number" step="0.1" id="cintura" name="cintura">
+            </div>
+            <div style="flex-grow: 1;">
+                <label for="braco">Braço (cm):</label>
+                <input type="number" step="0.1" id="braco" name="braco">
+            </div>
+        </div>
+        <button type="submit">Salvar Registro</button>
+    </form>
+    <hr>
+    {% endif %}
+
+    <h3>Histórico de Medidas</h3>
+    {% if cliente.progresso %}
+        <table cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Peso (Kg)</th>
+                    <th>Cintura (cm)</th>
+                    <th>Braço (cm)</th>
+                    {% if perfil == 'professor' %}
+                    <th>Ação</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in cliente.progresso | reverse %}
+                <tr>
+                    <td>{{ registro.data }}</td>
+                    <td>{{ registro.peso }}</td>
+                    <td>{{ registro.cintura }}</td>
+                    <td>{{ registro.braco }}</td>
+                    {% if perfil == 'professor' %}
+                    <td>
+                        <form method="POST" action="{{ url_for('progresso', cliente_id=cliente.id) }}" style="display:inline;">
+                            <input type="hidden" name="remover_data" value="{{ registro.data }}">
+                            <button type="submit" onclick="return confirm('Confirmar remoção do registro da data {{ registro.data }}?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">❌</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Ainda não há registros de progresso para este cliente.</p>
+    {% endif %}
+{% endblock %}

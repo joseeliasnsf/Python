@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} Clientes | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>Lista de Clientes</h2>
+    
+    {% if clientes %}
+        <table cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Objetivo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.objetivo }}</td>
+                    <td>
+                        <a href="{{ url_for('treinos', cliente_id=cliente.id) }}">Treino</a> |
+                        <a href="{{ url_for('progresso', cliente_id=cliente.id) }}">Progresso</a> 
+                        
+                        {% if perfil == 'professor' %}
+                        |
+                        <form method="POST" action="{{ url_for('remover_cliente_route', cliente_id=cliente.id) }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja remover {{ cliente.nome }} e todos os seus dados?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">Remover</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum cliente cadastrado ainda. Use o link "Cadastrar Cliente".</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Minha Área | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>👤 Bem-vindo(a), {{ user_data.email }}!</h2>
+    
+    <div style="background-color: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+        <h3>Status de Conta</h3>
+        <p><strong>Perfil:</strong> Aluno</p>
+        <p>
+            <strong>Pagamento:</strong> 
+            <span style="font-weight: bold; color: 
+                {% if user_data.status_pagamento == 'Pago' %}var(--success-color){% elif user_data.status_pagamento == 'Pendente' %}var(--error-color){% else %}var(--secondary-color){% endif %};">
+                {{ user_data.status_pagamento }}
+            </span>
+        </p>
+    </div>
+
+    {% if cliente %}
+        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
+            <h3>Seus Dados de Treino (Cliente #{{ cliente.id }})</h3>
+            <p><strong>Nome Registrado:</strong> {{ cliente.nome }}</p>
+            <p><strong>Objetivo Principal:</strong> {{ cliente.objetivo }}</p>
+            <br>
+            <p>Acesse aqui sua rotina e progresso:</p>
+            <a href="{{ url_for('treinos', cliente_id=cliente.id) }}" class="button-link">Ver Meu Treino</a>
+            <a href="{{ url_for('progresso', cliente_id=cliente.id) }}" class="button-link" style="margin-left: 10px;">Ver Meu Progresso</a>
+        </div>
+    {% else %}
+        <p>Ainda não há dados de Cliente associados ao seu perfil. Por favor, contate o Professor.</p>
+    {% endif %}
+{% endblock %}

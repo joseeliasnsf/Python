@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | {{ nome_sistema }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="login-box">
+        <header class="logo-container">
+            <div class="logo-text">HASHEM</div>
+            <span class="logo-subtext">Personal Trainer System</span>
+        </header>
+
+        <h2>Acesso ao Sistema</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+        
+        <p style="margin-top: 20px;">
+            <a href="{{ url_for('register') }}">Não tem conta? Cadastre-se aqui.</a>
+        </p>
+
+        <p style="margin-top: 20px; font-size: 0.9em; color: var(--secondary-color);">
+            **Teste (Exemplo):** Professor: prof@test.com / 1234 | Aluno: aluno@test.com / 5678
+        </p>
+    </div>
+</body>
+</html>

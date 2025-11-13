@@ -1,0 +1,16 @@
+{
+    "jose@dominussoftware.com": {
+        "email": "jose@dominussoftware.com",
+        "senha_hash": "082130",
+        "perfil": "aluno",
+        "data_cadastro": "2025-11-11",
+        "status_pagamento": "Pago"
+    },
+    "joseeliasnsf.dev@gmail.com": {
+        "email": "joseeliasnsf.dev@gmail.com",
+        "senha_hash": "082130",
+        "perfil": "professor",
+        "data_cadastro": "2025-11-11",
+        "status_pagamento": "N/A"
+    }
+}

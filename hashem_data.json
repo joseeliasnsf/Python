@@ -1,0 +1,77 @@
+{
+    "clientes": {
+        "1": {
+            "id": 1,
+            "nome": "Jose",
+            "objetivo": "Hipertrofia",
+            "treinos": {
+                "A": [
+                    {
+                        "nome": "Rosca Direta",
+                        "series": "3",
+                        "reps": "10",
+                        "carga": "10"
+                    },
+                    {
+                        "nome": "Supino Reto",
+                        "series": "3",
+                        "reps": "10",
+                        "carga": "13"
+                    },
+                    {
+                        "nome": "Agachamento Livre",
+                        "series": "3",
+                        "reps": "10",
+                        "carga": "8"
+                    },
+                    {
+                        "nome": "Cadeira Extensora",
+                        "series": "4",
+                        "reps": "10",
+                        "carga": "10"
+                    }
+                ],
+                "C": [
+                    {
+                        "nome": "Desenvolvimento Halteres",
+                        "series": "3",
+                        "reps": "10",
+                        "carga": "12"
+                    }
+                ]
+            },
+            "progresso": [
+                {
+                    "data": "2025-11-10",
+                    "peso": "75",
+                    "cintura": "90",
+                    "braco": "89"
+                }
+            ]
+        },
+        "2": {
+            "id": 2,
+            "nome": "Lucas",
+            "objetivo": "Hipertrofia",
+            "treinos": {},
+            "progresso": []
+        },
+        "3": {
+            "id": 3,
+            "nome": "Leon",
+            "objetivo": "Hipertrofia",
+            "treinos": {
+                "B": [
+                    {
+                        "nome": "Cadeira Extensora",
+                        "series": "3",
+                        "reps": "12",
+                        "carga": "8"
+                    }
+                ]
+            },
+            "progresso": []
+        }
+    },
+    "proximo_cliente_id": 4
+}

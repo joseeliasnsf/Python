@@ -1,0 +1,50 @@
+{
+    "clientes": {
+        "1": {
+            "id": 1,
+            "nome": "Jose",
+            "objetivo": "hipertrofia",
+            "treinos": {
+                "A": [
+                    {
+                        "nome": "Supino Reto",
+                        "series": "3",
+                        "reps": "4",
+                        "carga": "20"
+                    }
+                ]
+            }
+        },
+        "2": {
+            "id": 2,
+            "nome": "Lucas",
+            "objetivo": "Hipertrofia",
+            "treinos": {
+                "B": [
+                    {
+                        "nome": "Desenvolvimento Halteres",
+                        "series": "3",
+                        "reps": "4",
+                        "carga": "10"
+                    }
+                ]
+            }
+        },
+        "3": {
+            "id": 3,
+            "nome": "Ana",
+            "objetivo": "Fortalecimento",
+            "treinos": {
+                "PERNA": [
+                    {
+                        "nome": "Agachamento Livre",
+                        "series": "3",
+                        "reps": "10",
+                        "carga": "6"
+                    }
+                ]
+            }
+        }
+    },
+    "proximo_cliente_id": 4
+}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Gerenciar Pagamentos | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>💰 Gerenciar Pagamentos de Alunos</h2>
+
+    {% if alunos %}
+        <table cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>E-mail (Usuário)</th>
+                    <th>Desde</th>
+                    <th>Status Atual</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.email }}</td>
+                    <td>{{ aluno.data_cadastro }}</td>
+                    <td style="font-weight: bold; color: 
+                        {% if aluno.status_pagamento == 'Pago' %}var(--success-color){% elif aluno.status_pagamento == 'Pendente' %}var(--error-color){% else %}var(--secondary-color){% endif %};">
+                        {{ aluno.status_pagamento }}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('pagamentos') }}" style="display:inline;">
+                            <input type="hidden" name="user_email" value="{{ aluno.email }}">
+                            <select name="status" required style="width: auto; margin-bottom: 0; padding: 5px;">
+                                <option value="Pendente" {% if aluno.status_pagamento == 'Pendente' %}selected{% endif %}>Pendente</option>
+                                <option value="Pago" {% if aluno.status_pagamento == 'Pago' %}selected{% endif %}>Pago</option>
+                                <option value="Atrasado" {% if aluno.status_pagamento == 'Atrasado' %}selected{% endif %}>Atrasado</option>
+                            </select>
+                            <button type="submit" style="padding: 5px 10px; margin-left: 5px;">Atualizar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum aluno cadastrado no sistema ainda.</p>
+    {% endif %}
+{% endblock %}

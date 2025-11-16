@@ -3,11 +3,12 @@
 {% block title %} Minha Área | {{ nome_sistema }} {% endblock %}
 
 {% block content %}
-    <h2>👤 Bem-vindo(a), {{ user_data.email }}!</h2>
+    <h2>👤 Bem-vindo(a), {{ user_data.nome_completo }}!</h2>
     
     <div style="background-color: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
         <h3>Status de Conta</h3>
         <p><strong>Perfil:</strong> Aluno</p>
+        <p><strong>Celular de Acesso:</strong> {{ user_data.celular | celular }}</p>
         <p>
             <strong>Pagamento:</strong> 
             <span style="font-weight: bold; color: 
@@ -19,8 +20,9 @@
 
     {% if cliente %}
         <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
-            <h3>Seus Dados de Treino (Cliente #{{ cliente.id }})</h3>
+            <h3>Seu Plano de Treino (Cliente #{{ cliente.id }})</h3>
             <p><strong>Nome Registrado:</strong> {{ cliente.nome }}</p>
+            <p><strong>Professor:</strong> {{ usuarios.get(cliente.professor_celular, {}).get('nome_completo', 'N/D') }}</p>
             <p><strong>Objetivo Principal:</strong> {{ cliente.objetivo }}</p>
             <br>
             <p>Acesse aqui sua rotina e progresso:</p>
@@ -28,6 +30,9 @@
             <a href="{{ url_for('progresso', cliente_id=cliente.id) }}" class="button-link" style="margin-left: 10px;">Ver Meu Progresso</a>
         </div>
     {% else %}
-        <p>Ainda não há dados de Cliente associados ao seu perfil. Por favor, contate o Professor.</p>
+        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; background-color: #f8d7da; color: #721c24;">
+            <p style="font-weight: bold;">⚠️ Cliente Não Encontrado</p>
+            <p>Seu perfil de aluno **{{ user_data.celular | celular }}** não está vinculado a nenhum plano de treino (Cliente). Por favor, contate o Professor para que ele faça sua vinculação.</p>
+        </div>
     {% endif %}
 {% endblock %}

@@ -1,16 +1,36 @@
 {
-    "jose@dominussoftware.com": {
-        "email": "jose@dominussoftware.com",
-        "senha_hash": "082130",
-        "perfil": "aluno",
-        "data_cadastro": "2025-11-11",
-        "status_pagamento": "Pago"
-    },
-    "joseeliasnsf.dev@gmail.com": {
-        "email": "joseeliasnsf.dev@gmail.com",
-        "senha_hash": "082130",
-        "perfil": "professor",
-        "data_cadastro": "2025-11-11",
+    "99999999999": {
+        "nome_completo": "Administrador Geral",
+        "celular": "99999999999",
+        "senha_hash": "nimda",
+        "perfil": "admin",
+        "data_cadastro": "2025-11-14",
         "status_pagamento": "N/A"
+    },
+    "81993280318": {
+        "nome_completo": "Jensf",
+        "celular": "81993280318",
+        "senha_hash": "0891",
+        "perfil": "admin",
+        "data_cadastro": "2025-11-14",
+        "status_pagamento": "N/A"
+    },
+    "81981594750": {
+        "nome_completo": "Professor",
+        "celular": "81981594750",
+        "senha_hash": "0891",
+        "perfil": "professor",
+        "data_cadastro": "2025-11-14",
+        "status_pagamento": "Pago",
+        "tipo_pagamento": "",
+        "motivo_pagamento": ""
+    },
+    "81993349052": {
+        "nome_completo": "Alunos",
+        "celular": "81993349052",
+        "senha_hash": "0891",
+        "perfil": "aluno",
+        "data_cadastro": "2025-11-14",
+        "status_pagamento": "Pago"
     }
 }

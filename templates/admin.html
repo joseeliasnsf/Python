@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %} Área Administrativa | {{ nome_sistema }} {% endblock %}
+
+{% block content %}
+    <h2>👑 Painel de Administração</h2>
+    <p>Acesso exclusivo para gerenciar usuários, perfis e configurações do sistema.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="margin-bottom: 20px;">
+            {% for category, message in messages %}
+                <div class="flash-{{ category }}" style="padding: 10px; border-radius: 5px; margin-bottom: 5px;">{{ message }}</div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="card-section">
+        <h3>➕ Adicionar Novo Usuário (Professor/Admin)</h3>
+        <form method="POST" action="{{ url_for('admin_area') }}">
+            <input type="hidden" name="add_user" value="1">
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="celular">Celular (apenas números, ex: 11987654321):</label>
+            <input type="text" id="celular" name="celular" required pattern="\d{10,11}" title="Apenas números, 10 ou 11 dígitos.">
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <label for="perfil">Perfil:</label>
+            <select id="perfil" name="perfil" required>
+                <option value="professor">Professor</option>
+                <option value="admin">Administrador</option>
+            </select>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    ---
+
+    <h3>👥 Gerenciamento de Usuários ({{ lista_usuarios | length }})</h3>
+
+    {% if lista_usuarios %}
+        <table cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Celular</th>
+                    <th>Perfil</th>
+                    <th>Data Cadastro</th>
+                    <th>Status Atual</th>
+                    <th>Atualizar Status (Pagamento)</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in lista_usuarios %}
+                <tr>
+                    <td>{{ usuario.nome_completo }}</td>
+                    <td>{{ usuario.celular | celular }}</td>
+                    <td><span class="tag-{{ usuario.perfil }}">{{ usuario.perfil | title }}</span></td>
+                    <td>{{ usuario.data_cadastro }}</td>
+                    <td>
+                        <span style="font-weight: bold; color: 
+                            {% if usuario.status_pagamento == 'Pago' %}var(--success-color){% elif usuario.status_pagamento == 'Pendente' %}var(--error-color){% else %}var(--secondary-color){% endif %};">
+                            {{ usuario.status_pagamento }}
+                        </span>
+                        {% if usuario.get('tipo_pagamento') or usuario.get('motivo_pagamento') %}
+                            <br><small style="color: var(--secondary-color);">({{ usuario.get('tipo_pagamento', 'N/D') }} / {{ usuario.get('motivo_pagamento', 'N/D') }})</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {# Formulário de Pagamento: Visível para Alunos e Professores, não para Admins #}
+                        {% if usuario.perfil != 'admin' %}
+                            <form method="POST" action="{{ url_for('admin_area') }}" style="display:inline; width: 350px;">
+                                <input type="hidden" name="update_payment" value="1">
+                                <input type="hidden" name="celular_alvo" value="{{ usuario.celular }}">
+                                
+                                <select name="novo_status" required>
+                                    <option value="Pago" {% if usuario.status_pagamento == 'Pago' %}selected{% endif %}>Pago</option>
+                                    <option value="Pendente" {% if usuario.status_pagamento == 'Pendente' %}selected{% endif %}>Pendente</option>
+                                    <option value="Isento" {% if usuario.status_pagamento == 'Isento' %}selected{% endif %}>Isento</option>
+                                </select>
+                                
+                                <select name="tipo_pagamento">
+                                    <option value="">-- Tipo (Opcional) --</option>
+                                    <option value="Mensalidade" {% if usuario.get('tipo_pagamento') == 'Mensalidade' %}selected{% endif %}>Mensalidade</option>
+                                    <option value="Plano Trimestral" {% if usuario.get('tipo_pagamento') == 'Plano Trimestral' %}selected{% endif %}>Plano Trimestral</option>
+                                    <option value="Avulso" {% if usuario.get('tipo_pagamento') == 'Avulso' %}selected{% endif %}>Avulso</option>
+                                    <option value="Bolsa" {% if usuario.get('tipo_pagamento') == 'Bolsa' %}selected{% endif %}>Bolsa/Isenção</option>
+                                </select>
+                                
+                                <input type="text" name="motivo_pagamento" placeholder="Motivo/Obs" value="{{ usuario.get('motivo_pagamento', '') }}" style="width: 100px;">
+                                
+                                <button type="submit" class="button-action" style="background-color: var(--secondary-color); margin-top: 5px;">Salvar</button>
+                            </form>
+                        {% else %}
+                            N/A (Admin)
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if usuario.perfil != 'admin' %}
+                        <form method="POST" action="{{ url_for('admin_area') }}" style="display:inline;">
+                            <input type="hidden" name="remove_user" value="{{ usuario.celular }}">
+                            <button type="submit" onclick="return confirm('Confirmar remoção permanente de {{ usuario.nome_completo }}?');" class="button-action" style="background-color: var(--error-color);">Remover</button>
+                        </form>
+                        {% else %}
+                            Acesso Vitalício
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum usuário cadastrado no sistema.</p>
+    {% endif %}
+
+    <style>
+        .tag-admin { background-color: #ffc107; color: #333; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .tag-professor { background-color: #28a745; color: white; padding: 3px 8px; border-radius: 4px; }
+        .tag-aluno { background-color: #007bff; color: white; padding: 3px 8px; border-radius: 4px; }
+    </style>
+{% endblock %}

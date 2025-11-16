@@ -1,17 +1,60 @@
 {% extends 'base.html' %}
 
-{% block title %} Cadastro | {{ nome_sistema }} {% endblock %}
+{% block title %} Cadastro de Cliente | {{ nome_sistema }} {% endblock %}
 
 {% block content %}
-    <h2>Cadastro de Novo Cliente</h2>
-
+    <h2>➕ Cadastrar Novo Cliente</h2>
+    
     <form method="POST" action="{{ url_for('cadastro') }}">
-        <label for="nome">Nome do Cliente:</label>
-        <input type="text" id="nome" name="nome" required>
+        
+        <label for="aluno_celular">Vincular a um Aluno Registrado:</label>
+        <select id="aluno_celular" name="aluno_celular" onchange="toggleNomeField(this.value)">
+            <option value="">-- Não vincular (Criar perfil sem acesso de Aluno) --</option>
+            {% for aluno in alunos_disponiveis %}
+                <option value="{{ aluno.celular }}">{{ aluno.nome_completo }} ({{ aluno.celular | celular }})</option>
+            {% endfor %}
+        </select>
+        <p style="font-size: 0.8em; color: var(--secondary-color); margin-bottom: 20px;">
+            Selecione um aluno que já se cadastrou. **Se você selecionar, o nome será assumido automaticamente** do cadastro do aluno.
+        </p>
 
-        <label for="objetivo">Objetivo:</label>
-        <input type="text" id="objetivo" name="objetivo" required>
+        <div id="nome-field-container">
+            <label for="nome">Nome Completo do Cliente:</label>
+            <input type="text" id="nome" name="nome" placeholder="Obrigatório se NENHUM aluno for selecionado" required>
+        </div>
+
+        <label for="objetivo">Objetivo Principal:</label>
+        <select id="objetivo" name="objetivo" required>
+            <option value="Hipertrofia">Hipertrofia (Ganho de Massa)</option>
+            <option value="Emagrecimento">Emagrecimento (Perda de Peso)</option>
+            <option value="Resistencia">Resistência e Condicionamento</option>
+            <option value="Saude">Saúde Geral</option>
+        </select>
 
         <button type="submit">Cadastrar Cliente</button>
     </form>
+    
+    <script>
+        // Função para desabilitar o campo "Nome" se um aluno for selecionado.
+        function toggleNomeField(selectedValue) {
+            const nomeField = document.getElementById('nome');
+            if (selectedValue) {
+                // Se um celular for selecionado, desabilita e remove o 'required'
+                nomeField.disabled = true;
+                nomeField.removeAttribute('required');
+                nomeField.value = "Nome assumido do cadastro do aluno";
+            } else {
+                // Se '-- Não vincular --' for selecionado, habilita e adiciona o 'required'
+                nomeField.disabled = false;
+                nomeField.setAttribute('required', 'required');
+                nomeField.value = "";
+                nomeField.focus();
+            }
+        }
+        
+        // Garante que o estado inicial (sem seleção) pede o nome
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleNomeField(document.getElementById('aluno_celular').value);
+        });
+    </script>
 {% endblock %}

@@ -3,32 +3,34 @@
 {% block title %} Progresso de {{ cliente.nome }} | {{ nome_sistema }} {% endblock %}
 
 {% block content %}
-    <h2>📈 Acompanhamento de Progresso de {{ cliente.nome }}</h2>
+    <h2>📈 Progresso de {{ cliente.nome }}</h2>
+    <a href="{{ url_for('index') }}" class="button-link" style="background-color: var(--secondary-color);">Voltar para Clientes</a>
 
-    {% if perfil == 'professor' %}
-    <h3>Registrar Novo Progresso</h3>
-    <form method="POST" action="{{ url_for('progresso', cliente_id=cliente.id) }}">
-        <div style="display: flex; gap: 20px;">
-            <div style="flex-grow: 1;">
-                <label for="peso">Peso (Kg):</label>
-                <input type="number" step="0.1" id="peso" name="peso" required>
+    {% if perfil in ['professor', 'admin'] %}
+    <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; margin-top: 20px; margin-bottom: 30px;">
+        <h3>Registrar Novo Progresso</h3>
+        <form method="POST" action="{{ url_for('progresso', cliente_id=cliente.id) }}">
+            <div style="display: flex; gap: 15px;">
+                <div style="flex-grow: 1;">
+                    <label for="peso">Peso (Kg):</label>
+                    <input type="number" step="0.1" id="peso" name="peso" required>
+                </div>
+                <div style="flex-grow: 1;">
+                    <label for="cintura">Cintura (cm - Opcional):</label>
+                    <input type="number" step="1" id="cintura" name="cintura">
+                </div>
+                <div style="flex-grow: 1;">
+                    <label for="braco">Braço (cm - Opcional):</label>
+                    <input type="number" step="1" id="braco" name="braco">
+                </div>
             </div>
-            <div style="flex-grow: 1;">
-                <label for="cintura">Cintura (cm):</label>
-                <input type="number" step="0.1" id="cintura" name="cintura">
-            </div>
-            <div style="flex-grow: 1;">
-                <label for="braco">Braço (cm):</label>
-                <input type="number" step="0.1" id="braco" name="braco">
-            </div>
-        </div>
-        <button type="submit">Salvar Registro</button>
-    </form>
-    <hr>
+            <button type="submit">Salvar Progresso</button>
+        </form>
+    </div>
     {% endif %}
 
-    <h3>Histórico de Medidas</h3>
     {% if cliente.progresso %}
+        <h3>Histórico de Medidas</h3>
         <table cellpadding="10" cellspacing="0">
             <thead>
                 <tr>
@@ -36,7 +38,7 @@
                     <th>Peso (Kg)</th>
                     <th>Cintura (cm)</th>
                     <th>Braço (cm)</th>
-                    {% if perfil == 'professor' %}
+                    {% if perfil in ['professor', 'admin'] %}
                     <th>Ação</th>
                     {% endif %}
                 </tr>
@@ -48,11 +50,11 @@
                     <td>{{ registro.peso }}</td>
                     <td>{{ registro.cintura }}</td>
                     <td>{{ registro.braco }}</td>
-                    {% if perfil == 'professor' %}
+                    {% if perfil in ['professor', 'admin'] %}
                     <td>
                         <form method="POST" action="{{ url_for('progresso', cliente_id=cliente.id) }}" style="display:inline;">
                             <input type="hidden" name="remover_data" value="{{ registro.data }}">
-                            <button type="submit" onclick="return confirm('Confirmar remoção do registro da data {{ registro.data }}?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">❌</button>
+                            <button type="submit" onclick="return confirm('Remover registro da data {{ registro.data }}?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">❌</button>
                         </form>
                     </td>
                     {% endif %}
@@ -61,6 +63,6 @@
             </tbody>
         </table>
     {% else %}
-        <p>Ainda não há registros de progresso para este cliente.</p>
+        <p>Nenhum registro de progresso encontrado para este cliente.</p>
     {% endif %}
 {% endblock %}

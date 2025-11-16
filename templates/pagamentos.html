@@ -4,12 +4,14 @@
 
 {% block content %}
     <h2>💰 Gerenciar Pagamentos de Alunos</h2>
+    <p>Use esta área para atualizar o status de pagamento de Alunos. O Administrador pode gerenciar todos os usuários na área Admin.</p>
 
     {% if alunos %}
         <table cellpadding="10" cellspacing="0">
             <thead>
                 <tr>
-                    <th>E-mail (Usuário)</th>
+                    <th>Nome do Aluno</th>
+                    <th>Celular (Login)</th> 
                     <th>Desde</th>
                     <th>Status Atual</th>
                     <th>Ação</th>
@@ -18,7 +20,8 @@
             <tbody>
                 {% for aluno in alunos %}
                 <tr>
-                    <td>{{ aluno.email }}</td>
+                    <td>{{ aluno.nome_completo }}</td>
+                    <td>{{ aluno.celular | celular }}</td>
                     <td>{{ aluno.data_cadastro }}</td>
                     <td style="font-weight: bold; color: 
                         {% if aluno.status_pagamento == 'Pago' %}var(--success-color){% elif aluno.status_pagamento == 'Pendente' %}var(--error-color){% else %}var(--secondary-color){% endif %};">
@@ -26,7 +29,7 @@
                     </td>
                     <td>
                         <form method="POST" action="{{ url_for('pagamentos') }}" style="display:inline;">
-                            <input type="hidden" name="user_email" value="{{ aluno.email }}">
+                            <input type="hidden" name="user_celular" value="{{ aluno.celular }}">
                             <select name="status" required style="width: auto; margin-bottom: 0; padding: 5px;">
                                 <option value="Pendente" {% if aluno.status_pagamento == 'Pendente' %}selected{% endif %}>Pendente</option>
                                 <option value="Pago" {% if aluno.status_pagamento == 'Pago' %}selected{% endif %}>Pago</option>

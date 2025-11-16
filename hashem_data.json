@@ -1,77 +1,37 @@
 {
     "clientes": {
-        "1": {
-            "id": 1,
-            "nome": "Jose",
+        "4": {
+            "id": 4,
+            "nome": "Teste Da Silva",
             "objetivo": "Hipertrofia",
             "treinos": {
                 "A": [
                     {
-                        "nome": "Rosca Direta",
-                        "series": "3",
-                        "reps": "10",
-                        "carga": "10"
-                    },
-                    {
                         "nome": "Supino Reto",
                         "series": "3",
-                        "reps": "10",
-                        "carga": "13"
-                    },
-                    {
-                        "nome": "Agachamento Livre",
-                        "series": "3",
-                        "reps": "10",
-                        "carga": "8"
-                    },
-                    {
-                        "nome": "Cadeira Extensora",
-                        "series": "4",
-                        "reps": "10",
-                        "carga": "10"
-                    }
-                ],
-                "C": [
-                    {
-                        "nome": "Desenvolvimento Halteres",
-                        "series": "3",
-                        "reps": "10",
-                        "carga": "12"
+                        "reps": "10-12",
+                        "carga": "15"
                     }
                 ]
             },
-            "progresso": [
-                {
-                    "data": "2025-11-10",
-                    "peso": "75",
-                    "cintura": "90",
-                    "braco": "89"
-                }
-            ]
+            "progresso": []
         },
-        "2": {
-            "id": 2,
-            "nome": "Lucas",
-            "objetivo": "Hipertrofia",
+        "5": {
+            "id": 5,
+            "nome": "Teste 2",
+            "objetivo": "Emagrecimento",
             "treinos": {},
             "progresso": []
         },
-        "3": {
-            "id": 3,
-            "nome": "Leon",
+        "6": {
+            "id": 6,
+            "nome": "Alunos",
             "objetivo": "Hipertrofia",
-            "treinos": {
-                "B": [
-                    {
-                        "nome": "Cadeira Extensora",
-                        "series": "3",
-                        "reps": "12",
-                        "carga": "8"
-                    }
-                ]
-            },
-            "progresso": []
+            "treinos": {},
+            "progresso": [],
+            "professor_celular": "81981594750",
+            "aluno_celular": "81993349052"
         }
     },
-    "proximo_cliente_id": 4
+    "proximo_cliente_id": 7
 }

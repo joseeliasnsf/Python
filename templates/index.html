@@ -1,17 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %} Clientes | {{ nome_sistema }} {% endblock %}
+{% block title %} Meus Clientes | {{ nome_sistema }} {% endblock %}
 
 {% block content %}
-    <h2>Lista de Clientes</h2>
+    <h2>👥 Meus Clientes Cadastrados ({{ clientes | length }})</h2>
     
+    <p>Gerencie os clientes vinculados ao seu perfil, visualize progresso, e defina treinos.</p>
+
+    {# NOVO: Alerta de alunos registrados sem vinculação #}
+    {% if alunos_disponiveis %}
+    <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        ⚠️ **Alunos Registrados Sem Cliente:** Existem **{{ alunos_disponiveis | length }}** alunos que se cadastraram no sistema, mas ainda não estão vinculados a um perfil de Cliente. Vá em **Cadastrar Cliente** para vinculá-los.
+    </div>
+    {% endif %}
+
     {% if clientes %}
         <table cellpadding="10" cellspacing="0">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
+                    <th>Nome do Cliente</th>
                     <th>Objetivo</th>
+                    <th>Celular do Aluno</th>
+                    <th>Treinos</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -22,21 +33,25 @@
                     <td>{{ cliente.nome }}</td>
                     <td>{{ cliente.objetivo }}</td>
                     <td>
-                        <a href="{{ url_for('treinos', cliente_id=cliente.id) }}">Treino</a> |
-                        <a href="{{ url_for('progresso', cliente_id=cliente.id) }}">Progresso</a> 
-                        
-                        {% if perfil == 'professor' %}
-                        |
-                        <form method="POST" action="{{ url_for('remover_cliente_route', cliente_id=cliente.id) }}" style="display:inline;">
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja remover {{ cliente.nome }} e todos os seus dados?');" class="button-action" style="color: var(--error-color); background: none; border: none; cursor: pointer; padding: 0;">Remover</button>
-                        </form>
+                        {% if cliente.aluno_celular %}
+                            {{ cliente.aluno_celular | celular }}
+                        {% else %}
+                            <span style="color: var(--error-color);">Não Vinculado</span>
                         {% endif %}
+                    </td>
+                    <td>{{ cliente.treinos | length }}</td>
+                    <td>
+                        <a href="{{ url_for('treinos', cliente_id=cliente.id) }}" class="button-link" style="padding: 5px 10px;">Treinos</a>
+                        <a href="{{ url_for('progresso', cliente_id=cliente.id) }}" class="button-link" style="padding: 5px 10px;">Progresso</a>
+                        <form method="POST" action="{{ url_for('remover_cliente_route', cliente_id=cliente.id) }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Confirmar remoção de {{ cliente.nome }}? Todos os dados serão perdidos.');" class="button-action" style="background-color: var(--error-color); padding: 5px 10px;">Remover</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Nenhum cliente cadastrado ainda. Use o link "Cadastrar Cliente".</p>
+        <p>Você não tem clientes cadastrados e vinculados ao seu perfil ainda. Use o botão "Cadastrar Cliente" no menu.</p>
     {% endif %}
 {% endblock %}

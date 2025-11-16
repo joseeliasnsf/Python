@@ -23,8 +23,8 @@
         {% endwith %}
 
         <form method="POST" action="{{ url_for('login') }}">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="celular">Celular (Login):</label>
+            <input type="text" id="celular" name="celular" placeholder="Ex: 99999999999" required>
 
             <label for="senha">Senha:</label>
             <input type="password" id="senha" name="senha" required>
@@ -33,11 +33,11 @@
         </form>
         
         <p style="margin-top: 20px;">
-            <a href="{{ url_for('register') }}">Não tem conta? Cadastre-se aqui.</a>
+            <a href="{{ url_for('register') }}">Aluno? Cadastre-se aqui.</a>
         </p>
 
         <p style="margin-top: 20px; font-size: 0.9em; color: var(--secondary-color);">
-            **Teste (Exemplo):** Professor: prof@test.com / 1234 | Aluno: aluno@test.com / 5678
+            **Login Admin:** 99999999999 / admin
         </p>
     </div>
 </body>
